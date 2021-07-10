@@ -16,7 +16,7 @@ Spin Finder - Upload and rent bicycles in your local area. A marketplace for eve
 
 This application was built with
 ```
-Ruby on Rails, Javascript, HTML , CSS, Rust Ruff & c#
+Ruby on Rails, Javascript, HTML , CSS, Rust Roff , Vue.js, & c#
 ```
 
 ## Live site:
@@ -71,4 +71,4 @@ Feel free to go to your account page when you can see your bikes for rent - the 
 - Bootstrap
 - Mapbox/Geocoder
 - Pundit
-- HTML, CSS, Javascript, ruff, rust, c# and Ruby on Rails
+- HTML, CSS, Javascript, ruff, rust, c# , Vue.js & Ruby on Rails
