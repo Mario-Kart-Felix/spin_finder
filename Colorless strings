@@ -1,0 +1,172 @@
+//html {
+//    font-size: 18px;
+//}
+
+@color-php  : #4F5D95;
+@color-js   : #f1e05a;
+@color-html : #e34c26;
+@color-css  : #563d7c;
+@color-less : #1d365d;
+@color-scss : #c6538c;
+
+@color-xml  : #ccc;
+@color-xsl  : #ccc;
+@color-py   : #ccc;
+@color-c    : #ccc;
+@color-pl   : #ccc;
+
+@color-twig : #c1d026;
+@color-md   : #083fa1;
+
+@color-sql  : #ccc;
+
+#cm-projects {
+    .cm-project {
+        width: 15rem;
+        height: 15rem;
+        //border: 1px solid black;
+    }
+}
+
+#cm-project-template {
+    display: none;
+}
+
+
+#cm-new-project {
+/*
+
+    &:not(.cm-show) {
+        display: none;
+    }
+
+    &.cm-show {
+        //display: block;
+        --tw-bg-opacity: 0.5;
+    }
+*/
+    input {
+        width: 45rem;
+        max-width: 80vw;
+
+        &:required {
+            background-image: linear-gradient(to right, rgba(255,255,240,1), rgba(255,255,240,1));
+        }
+        &:invalid:required {
+            --tw-ring-color : rgba(255,0,0,0.2);
+        }
+    }
+
+    .cm-panel {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+}
+
+#cm-new-project {
+//#cm-success,
+//#cm-error,
+//#cm-confirm {
+    top : -1000;
+    bottom : -1000;
+    left : -1000;
+    right : -1000;
+    z-index : -1000;
+
+    &.cm-show {
+        top : 0;
+        bottom : 0;
+        left : 0;
+        right : 0;
+        z-index : 1000;
+    }
+}
+
+#cm-success{
+//#cm-error,
+//#cm-confirm {
+    &.cm-opacity {
+        & > div {
+            opacity : 1;
+        }
+    }
+}
+
+#cm-new-project {
+    &.cm-opacity {
+        & > div {
+            --tw-bg-opacity: 0.5;
+        }
+
+        & .cm-panel {
+            opacity : 1;
+        }
+    }
+}
+
+.cm-project {
+    &.cm-complete {
+        .cm-spinner {
+            display : none;
+        }
+    }
+    
+    &:not(.cm-complete) {
+        .cm-info {
+            display : none;
+        }
+    }
+    
+    .cm-info {
+        .cm-template {
+            display: none;
+        }
+        
+        .cm-color {
+            color : #ccc;
+        }
+        
+        .cm-php    { color : @color-php; }
+        .cm-b-php  { background-color : @color-php; }
+        
+        .cm-js     { color : @color-js; }
+        .cm-b-js   { background-color : @color-js; }
+        
+        .cm-html   { color : @color-html; }
+        .cm-b-html { background-color : @color-html; }
+        
+        .cm-css    { color : @color-css }
+        .cm-b-css  { background-color : @color-css; }
+        
+        .cm-less   { color : @color-less; }
+        .cm-b-less { background-color : @color-less; }
+        
+        .cm-scss   { color : @color-scss; }
+        .cm-b-scss { background-color : @color-scss; }
+        
+        .cm-xml    { color : @color-xml; }
+        .cm-b-xml  { background-color : @color-xml; }
+        
+        .cm-xsl    { color : @color-xsl; }
+        .cm-b-xsl  { background-color : @color-xsl; }
+        
+        .cm-py     { color : @color-py; }
+        .cm-b-py   { background-color : @color-py; }
+        
+        .cm-c      { color : @color-c; }
+        .cm-b-c    { background-color : @color-c; }
+        
+        .cm-pl     { color : @color-pl; }
+        .cm-b-pl   { background-color : @color-pl; }
+        
+        .cm-twig   { color : @color-twig; }
+        .cm-b-twig { background-color : @color-twig; }
+        
+        .cm-md     { color : @color-md; }
+        .cm-b-md   { background-color : @color-md; }
+        
+        .cm-sql    { color : @color-sql; }
+        .cm-b-sql  { background-color : @color-sql; }
+    }
+}
