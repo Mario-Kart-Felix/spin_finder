@@ -1,0 +1,218 @@
+///<reference path='refs.ts'/>
+
+module TDev.Browser {
+
+    export var TheHub: Hub;
+
+    export interface HubSection {
+        title: string; // localized            
+    }
+
+    var editorModes: StringMap<Cloud.EditorMode>;
+    var themes: StringMap<Cloud.ClientTheme>;
+    
+    function initThemes() {
+        if (editorModes && themes) return;
+        
+        editorModes = {
+            'block': {
+                id: 'block',
+                name: lf("beginner"),
+                descr: lf("Drag and drop blocks, simplified interface, great for beginners!"),
+                astMode: 1,
+                artId: 'brfljsds',
+                widgets: {
+                    // edit
+                    addNewButton: true,
+                    undoButton: true,
+                    changeSkillLevel: true,
+                    // refactoring
+                    promoteRefactoring: true,
+                    fixItButton: true,
+                    splitScreen: false,
+                    splitScreenOnLoad: true,
+                    searchArtRefactoring: true,
+                    calcSearchArt: true,
+                    scriptPropertiesIcons: true,
+                    // statements
+                    stringConcatProperty: true,
+                    show: true,
+                    "return": true,
+                    // sections
+                    dataSection: true,
+                    artSection: true,
+                    librariesSection: true,
+                    // ui
+                    wallScreenshot: true,
+                    wallHeart: true,
+                    startTutorialButton: true,
+                    nextTutorialsList: true,
+                    // hub
+                    hubTutorials: true,
+                    hubLearn: true,
+                    hubShowcase: true,
+                    publicationComments: true,
+                    translateComments: true,
+
+                    whileConditionDefault: "true",
+                    forConditionDefault: "5",
+                    ifConditionDefault: "true",
+
+                    scriptSocialLinks: true,
+                    scriptEmail: true,
+                    scriptAddToChannel: true,
+                }
+            },
+            'classic': {
+                id: 'classic',
+                name: lf("coder"),
+                descr: lf("Edit code as text, more options, for aspiring app writers!"),
+                artId: 'ehymsljr',
+                astMode: 2,
+                widgets: {
+                    // edit
+                    addNewButton: true,
+                    undoButton: true,
+                    // refactoring
+                    promoteRefactoring: true,
+                    fixItButton: true,
+                    splitScreen: true,
+                    searchArtRefactoring: true,
+                    calcSearchArt: true,
+                    tokenRefactoring: true,
+                    // misc
+                    changeSkillLevel: true,
+                    // edit
+                    copyPaste: true,
+                    selectStatements: true,
+                    selectExpressions: true,
+                    // features
+                    actionSettings: true,
+                    publishAsHidden: true,
+                    // refactoring
+                    simplify: true,
+                    // ui
+                    splitButton: true,
+                    uploadArtInSearchButton: true,
+                    calcApiHelp: true,
+                    sideRunButton: true,
+                    tutorialGoToPreviousStep: true,
+                    helpLinks: true,
+                    wallScreenshot: true,
+                    wallHeart: true,
+                    wallStop: true,
+                    nextTutorialsList: true,
+                    codeSearch: true,
+                    // section
+                    dataSection: true,
+                    eventsSection: true,
+                    pagesSection: true,
+                    artSection: true,
+                    librariesSection: true,
+                    scriptProperties: true,
+                    objectsSection: true,
+                    decoratorsSection: true,
+                    scriptPropertiesIcons: true,
+                    scriptPropertiesSettings: true,
+                    scriptPropertiesPropertyAtomic: true,
+                    scriptPropertiesManagement: true,
+                    databaseSection: true,
+                    persistanceRadio: true,
+                    // statements
+                    comment: true,
+                    foreach: true,
+                    boxed: true,
+                    stringConcatProperty: true,
+                    show: true,
+                    "return": true,
+                    "break": true,
+                    "continue": true,
+                    // hub
+                    hubTutorials: true,
+                    hubLearn: true,
+                    hubShowcase: true,
+                    hubTopAndNew: true,
+                    hubScriptUpdates: true,
+                    hubUsers: true,
+                    hubChannels: true,
+                    notifyAppReloaded: true,
+                    startTutorialButton: true,
+                    publicationComments: true,
+                    translateComments: true,
+                    outAssign: true,
+
+                    scriptSocialLinks: true,
+                    scriptPrintScript: true,
+                    scriptPrintTopic: true,
+                    scriptEmail: true,
+                    scriptAddToChannel: true,
+                }
+            },
+            'pro': {
+                id: 'pro',
+                name: lf("expert"),
+                artId: 'indivfwz',
+                descr: lf("'Javascripty' curly braces, all the tools, for experienced devs!"),
+                astMode: 3,
+                widgets: {
+                    // edit
+                    addNewButton: true,
+                    undoButton: true,
+                    // refactoring
+                    promoteRefactoring: true,
+                    fixItButton: true,
+                    splitScreen: true,
+                    searchArtRefactoring: true,
+                    calcSearchArt: true,
+                    makeAsyncRefactoring: true,
+                    tokenRefactoring: true,
+                    // misc
+                    changeSkillLevel: true,
+                    // edit
+                    copyPaste: true,
+                    selectStatements: true,
+                    selectExpressions: true,
+                    // features
+                    actionSettings: true,
+                    publishAsHidden: true,
+                    // refactoring
+                    simplify: true,
+                    // ui
+                    splitButton: true,
+                    uploadArtInSearchButton: true,
+                    calcApiHelp: true,
+                    sideRunButton: true,
+                    tutorialGoToPreviousStep: true,
+                    helpLinks: true,
+                    wallScreenshot: true,
+                    wallHeart: true,
+                    wallStop: true,
+                    // section
+                    dataSection: true,
+                    eventsSection: true,
+                    artSection: true,
+                    librariesSection: true,
+                    scriptProperties: true,
+                    scriptPropertiesSettings: true,
+                    scriptPropertiesPropertyAtomic: true,
+                    scriptPropertiesUseCppCompiler: true,
+                    databaseSection: true,
+                    // statements
+                    comment: true,
+                    foreach: true,
+                    boxed: true,
+                    show: true,
+                    "return": true,
+                    "break": true,
+                    "continue": true,
+                    stringConcatProperty: true,
+                    //navigation
+                    codeSearch: true,
+                    findReferences: true,
+                    gotoNavigation: true,
+                    // refactorings
+                    stripBlock: true,
+                    // debugging
+                    toggleBreakpoint: true,
+                    debugButton: true,
+                    // u
