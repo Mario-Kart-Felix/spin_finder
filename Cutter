@@ -1,0 +1,8 @@
+"corpus = df['description']\n",
+      "\n",
+      "remove_list = []\n",
+      "\n",
+      "for cor,i in zip(corpus, corpus.index):\n",
+      "    if type(cor) != unicode:\n",
+      "        print i,cor\n",
+      "        remove_list.append(i)\n
