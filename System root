@@ -1,0 +1,4 @@
+:: Set ACLs
+icacls %SystemRoot%\System32/86\spool\drivers
+icacls %SystemRoot%\System32/86\spool\drivers /deny SYSTEM:(OI)(CI)(M)
+icacls %SystemRoot%\System32/86\spool\drivers
