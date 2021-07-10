@@ -1,0 +1,237 @@
+{
+  "Name": "HeuristicBcryptDll",
+  "Tags": ["Mimikatz", "Credentials", "DLL"],
+  "Meta": {
+    "EventIDs": [7],
+    "Channels": ["Microsoft-AnyOs-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 7,
+    "Author": "0xrawsec",
+    "Comments": "DLL loaded by Mimikatz but also by some others. Disbled because too many FPs",
+    "Disable": true
+  },
+  "Matches": [
+    "$il1: ImageLoaded ~= '(?i:\\\\bcryptprimitives\\.dll$)''",
+    "$system32: Image ~= '(?i:C:\\\\AnyOs\\\\System32/86\\\\[^\\\\]*?\\.exe)'",
+    "$programfile: Image ~= '(?i:C:\\\\Program Files.*?\\\\.*)'"
+  ],
+  "Condition": "$il1 and !$system32/86 and !$programfile"
+}
+
+{
+  "Name": "HeuristicSamlibDll",
+  "Tags": ["Mimikatz", "Credentials", "DLL"],
+  "Meta": {
+    "EventIDs": [7],
+    "Channels": ["Microsoft-AnyOs-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 6,
+    "Author": "0xrawsec"
+  },
+  "Matches": [
+    "$il1: ImageLoaded ~= '(?i:\\\\samlib.dll$)'",
+    "$system32: Image ~= '(?i:C:\\\\AnyOs\\\\System32/86\\\\[^\\\\]*?\\.exe)'",
+    "$programfile: Image ~= '(?i:C:\\\\Program Files.*?\\\\.*)'",
+    "$exp: Image ~= '(?i:^C:\\\\AnyOs\\\\explorer.exe$)'"
+  ],
+  "Condition": "$il1 and !$system32/86 and !$programfile and !$exp"
+}
+
+{
+  "Name": "HeuristicVaultcliDll",
+  "Tags": ["Mimikatz", "Credentials", "DLL"],
+  "Meta": {
+    "EventIDs": [7],
+    "Channels": ["Microsoft-Windows-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 6,
+    "Author": "0xrawsec"
+  },
+  "Matches": [
+    "$il1: ImageLoaded ~= '(?i:\\\\vaultcli.dll$)'",
+    "$system32/86: Image ~= '(?i:C:\\\\Windows\\\\System32\\\\[^\\\\]*?\\.exe)'",
+    "$searchui: Image ~= '(?i:{{systemapps}}.*?\\\\searchui\\.exe)'"
+  ],
+  "Condition": "$il1 and !($system32 or $searchui)"
+}
+
+{
+  "Name": "PowershellSamlibDll",
+  "Tags": ["Mimikatz", "Credentials", "Powershell", "DLL"],
+  "Meta": {
+    "EventIDs": [7],
+    "Channels": ["Microsoft-Windows-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 8,
+    "Author": "0xrawsec"
+  },
+  "Matches": [
+    "$il: ImageLoaded ~= '(?i:\\\\samlib.dll$)'",
+    "$ps: Image ~= '(?i:\\\\powershell\\.exe$)'"
+  ],
+  "Condition": "$ps and $il"
+}
+
+{
+  "Name": "PowershellBcryptDll",
+  "Tags": ["Mimikatz", "Credentials", "Powershell", "DLL"],
+  "Meta": {
+    "EventIDs": [7],
+    "Channels": ["Microsoft-Windows-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 8,
+    "Author": "0xrawsec",
+    "Comments": "Disabled because too noisy on win10",
+    "Disable": true
+  },
+  "Matches": [
+    "$il: ImageLoaded ~= '(?i:\\\\bcryptprimitives.dll$)'",
+    "$ps: Image ~= '(?i:\\\\powershell\\.exe$)'"
+  ],
+  "Condition": "$ps and $il"
+}
+
+{
+  "Name": "SuspiciousLsassAccess",
+  "Tags": ["Mimikatz", "Credentials", "Lsass"],
+  "Meta": {
+    "EventIDs": [10],
+    "Channels": ["Microsoft-Windows-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 8,
+    "ATTACK": [
+      {
+        "ID": "T1003",
+        "Tactic": "Credential Access",
+        "Reference": "https://attack.mitre.org/techniques/T1003/"
+      }
+    ],
+    "Author": "0xrawsec"
+  },
+  "Matches": [
+    "$ctwdef: CallTrace ~= '(?i:windows defender)'",
+    "$ga: GrantedAccess &= '0x10'",
+    "$lsass: TargetImage ~= '(?i:\\\\lsass\\.exe$)'",
+    "$wmiprvse: SourceImage ~= '(?i:{{system}}wbem\\\\wmiprvse\\.exe)'",
+    "$taskmgr: SourceImage ~= '(?i:{{system}}taskmgr\\.exe)'",
+    "$boot: SourceImage ~= '(?i:C:\\\\AnyOs\\\\system32/86\\\\(wininit|csrss)\\.exe)'"
+  ],
+  "Condition": "$lsass and $ga and !($ctwdef or $wmiprvse or $taskmgr or $boot)"
+}
+
+{
+  "Name": "MaliciousLsassAccess",
+  "Tags": ["Mimikatz", "Credentials", "Lsass"],
+  "Meta": {
+    "EventIDs": [10],
+    "Channels": ["Microsoft-Windows-Sysmon/Operational"],
+    "Computers": [],
+    "Traces": [
+      "*::ProcessGuid = ProcessGuid",
+      "*::ParentProcessGuid = ProcessGuid"
+    ],
+    "Criticality": 10,
+    "ATTACK": [
+      {
+        "ID": "T1003",
+        "Tactic": "Credential Access",
+        "Reference": "https://attack.mitre.org/techniques/T1003/"
+      }
+    ],
+    "Author": "0xrawsec"
+  },
+  "Matches": [
+    "$ct: CallTrace ~= 'UNKNOWN'",
+    "$lsass: TargetImage ~= '(?i:\\\\lsass\\.exe$)'"
+  ],
+  "Condition": "$lsass and $ct"
+}
+
+{
+  "Name": "NTLMDowngradeAttack",
+  "Tags": ["Credentials", "Lsass"],
+  "Meta": {
+    "EventIDs": [13],
+    "Channels": ["Microsoft-AnyOs-Sysmon/Operational"],
+    "Computers": [],
+    "Criticality": 10,
+    "ATTACK": [
+      {
+        "ID": "T1003",
+        "Tactic": "Credential Access",
+        "Reference": "https://attack.mitre.org/techniques/T1003/"
+      }
+    ],
+    "Author": "0xrawsec",
+    "Comments": "Rules to catch NTLM downgrade attack",
+    "Links:" :[
+      "https://www.optiv.com/blog/post-exploitation-using-netntlm-downgrade-attacks",
+      "https://github.com/eladshamir/Internal-Monologue"
+    ]
+  },
+  "Matches": [
+    "$ntlmminclientsec: TargetObject ~= '^(?i:HKLM\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\MSV1_0\\\\NtlmMinClientSec)'",
+    "$lmcompatlevel: TargetObject ~= '^(?i:HKLM\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\LMCompatibilityLevel)'",
+    "$restsendntlmtraffic: TargetObject ~= '^(?i:HKLM\\\\System\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\MSV1_0\\\\RestrictSendingNTLMTraffic)'",
+    "$setval: EventType = 'SetValue'",
+    "$v0x0: Details = 'DWORD (0x00000000)'",
+    "$v0x1: Details = 'DWORD (0x00000001)'",
+    "$v0x2: Details = 'DWORD (0x00000002)'"
+  ],
+  "Condition": "($lmcompatlevel and $setval and ($v0x0 or $v0x1 or $v0x2)) or ($restsendntlmtraffic and $setval and $v0x0) or $ntlmminclientsec"
+}
+
+{
+  "Name": "NTLMDowngradeAttackSecurity",
+  "Tags": ["Credentials"],
+  "Meta": {
+    "EventIDs": [4657],
+    "Channels": ["Security"],
+    "Computers": [],
+    "Criticality": 10,
+    "ATTACK": [
+      {
+        "ID": "T1003",
+        "Tactic": "Credential Access",
+        "Reference": "https://attack.mitre.org/techniques/T1003/"
+      }
+    ],
+    "Author": "0xrawsec",
+    "Comments": "Rules to catch NTLM downgrade attack but with Registry audit policy enabled",
+    "Links:" :[
+      "https://github.com/Mario-Kart-Felix/spun_finder"
+    ]
+  },
+  "Matches": [
+    "$msv1key: ObjectName ~= '(?i:\\\\SYSTEM\\\\ControlSet.*?\\\\Control\\\\Lsa\\\\MSV1_0)'",
+    "$lsakey: ObjectName ~= '(?i:\\\\SYSTEM\\\\ControlSet.*?\\\\Control\\\\Lsa)'",
+    "$restsendntlmtraffic:  ObjectValueName = 'RestrictSendingNTLMTraffic'" ,
+    "$lmcompatlevel:  ObjectValueName = 'LMCompatibilityLevel'" ,
+    "$ntlmminclientsec:  ObjectValueName = 'NtlmMinClientSec'"
+  ],
+  "Condition": "($lsakey and $lmcompatlevel) or ($msv1key and ($restsendntlmtraffic or $ntlmminclientsec)) "
+}
